@@ -15,7 +15,7 @@ export default function NavBar() {
 
   return (
     <header className="border-b border-gray-300">
-      <nav className="mx-auto flex h-14 max-w-5xl items-center gap-6 px-4">
+      <nav className="flex h-14 max-w-5xl items-center gap-6 px-4">
         <Link href="/" aria-label="Home">
           <FaBug />
         </Link>

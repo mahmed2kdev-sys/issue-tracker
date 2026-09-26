@@ -1,7 +1,12 @@
+import { Button } from "@radix-ui/themes";
+import Link from "next/link";
+
 export default function Home() {
   return (
     <div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <Button>
+        <Link href="/issues/new">New Issue</Link>
+      </Button>
     </div>
   );
 }
