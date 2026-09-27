@@ -10,6 +10,7 @@ import { z } from "zod";
 import { CreateIssueSchema } from "@/app/ValidationSchemas";
 import { Button, Callout, TextField } from "@radix-ui/themes";
 import ErrorMessage from "@/app/components/ErrorMessage";
+import Spinner from "@/app/components/Spinner";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 
@@ -25,7 +26,7 @@ function NewIssuePage() {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<IssueForm>({
     resolver: zodResolver(CreateIssueSchema),
     defaultValues: { title: "", description: "" },
@@ -49,10 +50,7 @@ function NewIssuePage() {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <TextField.Root
-        placeholder="Title"
-        {...register("title")}
-      />
+      <TextField.Root placeholder="Title" {...register("title")} />
       <ErrorMessage>{errors.title?.message}</ErrorMessage>
       <Controller
         name="description"
@@ -67,7 +65,10 @@ function NewIssuePage() {
         )}
       />
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
-      <Button>Submit New Issue</Button>
+      <Button disabled={isSubmitting}>
+        Submit New Issue
+        {isSubmitting && <Spinner />}
+      </Button>
     </form>
   );
 }
