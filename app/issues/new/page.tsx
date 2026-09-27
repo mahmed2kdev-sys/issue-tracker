@@ -8,7 +8,8 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { CreateIssueSchema } from "@/app/ValidationSchemas";
-import { Button, Callout, Text, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextField } from "@radix-ui/themes";
+import ErrorMessage from "@/app/components/ErrorMessage";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 
@@ -52,11 +53,7 @@ function NewIssuePage() {
         placeholder="Title"
         {...register("title")}
       />
-      {errors.title && (
-        <Text color="red" size="2" as="p" className="block pb-2">
-          {errors.title.message}
-        </Text>
-      )}
+      <ErrorMessage>{errors.title?.message}</ErrorMessage>
       <Controller
         name="description"
         control={control}
@@ -69,11 +66,7 @@ function NewIssuePage() {
           />
         )}
       />
-      {errors.description && (
-        <Text color="red" size="2" as="p" className="block pb-2">
-          {errors.description.message}
-        </Text>
-      )}
+      <ErrorMessage>{errors.description?.message}</ErrorMessage>
       <Button>Submit New Issue</Button>
     </form>
   );
