@@ -5,16 +5,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { CreateIssueSchema } from "@/app/ValidationSchemas";
 import { Button, Callout, Text, TextField } from "@radix-ui/themes";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
 
-interface IssueForm {
-  title: string;
-  description: string;
-}
+// ponytail: single shared schema, no duplicate inline rules
+type IssueForm = z.infer<typeof CreateIssueSchema>;
 
 function NewIssuePage() {
   const router = useRouter();
@@ -25,6 +26,7 @@ function NewIssuePage() {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueForm>({
+    resolver: zodResolver(CreateIssueSchema),
     defaultValues: { title: "", description: "" },
   });
 
@@ -48,7 +50,7 @@ function NewIssuePage() {
       )}
       <TextField.Root
         placeholder="Title"
-        {...register("title", { required: "Title is required." })}
+        {...register("title")}
       />
       {errors.title && (
         <Text color="red" size="2" as="p" className="block pb-2">
@@ -58,7 +60,6 @@ function NewIssuePage() {
       <Controller
         name="description"
         control={control}
-        rules={{ required: "Description is required." }}
         render={({ field }) => (
           <MDEditor
             value={field.value}
