@@ -43,7 +43,7 @@ export default async function IssueDetailPage({ params }: Props) {
           {issue.createdAt.toDateString()}
         </Text>
       </Flex>
-      <Card>
+      <Card className="prose">
         <ReactMarkdown>{issue.description ?? ""}</ReactMarkdown>
       </Card>
     </div>
