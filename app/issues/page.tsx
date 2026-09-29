@@ -1,8 +1,8 @@
 import IssueActions from "@/app/issues/IssueActions";
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
+import Link from "@/app/components/Link";
 import prisma from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
-import Link from "next/link";
 import delay from "delay";
 
 async function IssuesPage() {
@@ -38,7 +38,7 @@ async function IssuesPage() {
                 <IssueStatusBadge status={issue.status} />
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
-                {issue.createdAt.toLocaleDateString()}
+                {issue.createdAt.toDateString()}
               </Table.Cell>
             </Table.Row>
           ))}
