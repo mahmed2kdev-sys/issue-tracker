@@ -1,5 +1,5 @@
-import IssueForm from "../_components/IssueForm";
+import DynamicIssueForm from "../_components/DynamicIssueForm";
 
 export default function NewIssuePage() {
-  return <IssueForm />;
+  return <DynamicIssueForm />;
 }
