@@ -5,7 +5,7 @@ import { Table } from "@radix-ui/themes";
 import delay from "delay";
 
 async function IssuesPage() {
-  await delay(2000);
+  await delay(1000);
   const issues = await prisma.issue.findMany();
 
   return (
@@ -46,5 +46,5 @@ async function IssuesPage() {
     </div>
   );
 }
-
+export const dynamic = "force-dynamic";
 export default IssuesPage;
