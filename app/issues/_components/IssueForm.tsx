@@ -4,7 +4,7 @@ import { ErrorMessage, Spinner } from "@/app/components";
 import { issueSchema } from "@/app/ValidationSchemas";
 import type { Issue } from "@/generated/prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Button, Callout, Flex, TextField } from "@radix-ui/themes";
 import "@uiw/react-markdown-preview/markdown.css";
 import "@uiw/react-md-editor/markdown-editor.css";
 import axios from "axios";
@@ -73,10 +73,23 @@ export default function IssueForm({ issue }: { issue?: Issue }) {
         )}
       />
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
-      <Button disabled={isSubmitting}>
-        {issue ? "Update Issue" : "Submit New Issue"}
-        {isSubmitting && <Spinner />}
-      </Button>
+      <Flex gap="3">
+        <Button disabled={isSubmitting}>
+          {issue ? "Update Issue" : "Submit New Issue"}
+          {isSubmitting && <Spinner />}
+        </Button>
+        <Button
+          type="button"
+          variant="soft"
+          color="gray"
+          disabled={isSubmitting}
+          onClick={() =>
+            router.push(issue ? `/issues/${issue.id}` : "/issues")
+          }
+        >
+          Cancel
+        </Button>
+      </Flex>
     </form>
   );
 }
