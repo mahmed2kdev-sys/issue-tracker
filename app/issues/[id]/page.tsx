@@ -36,8 +36,8 @@ export default async function IssueDetailPage({ params }: Props) {
   if (!issue) notFound();
 
   return (
-    <Grid columns={{ initial: "1", md: "5" }} gap="5">
-      <Box className="lg:col-span-4">
+    <Grid columns={{ initial: "1", sm: "5" }} gap="5">
+      <Box className="md:col-span-4">
         <IssueDetails issue={issue} />
       </Box>
       <Box>
