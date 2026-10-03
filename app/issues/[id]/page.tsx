@@ -43,7 +43,7 @@ export default async function IssueDetailPage({ params }: Props) {
       <Box>
         <Flex direction="column" gap="4">
           <EditIssueButton issueId={issue.id} />
-          <DeleteIssueButton />
+          <DeleteIssueButton issueId={issue.id} />
         </Flex>
       </Box>
     </Grid>
