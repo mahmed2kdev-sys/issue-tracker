@@ -31,3 +31,26 @@ export async function PATCH(
   });
   return NextResponse.json(updatedIssue);
 }
+
+export async function DELETE(
+  _request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const issueId = parseInt(id);
+  if (isNaN(issueId)) {
+    return NextResponse.json({ error: "Invalid issue id" }, { status: 400 });
+  }
+
+  const existing = await prisma.issue.findUnique({
+    where: { id: issueId },
+  });
+  if (!existing) {
+    return NextResponse.json({ error: "Issue not found" }, { status: 404 });
+  }
+
+  await prisma.issue.delete({
+    where: { id: issueId },
+  });
+  return NextResponse.json({});
+}
