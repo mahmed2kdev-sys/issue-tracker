@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetails from "./IssueDetails";
+import { auth } from "@/app/auth/authOptions";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -26,6 +27,7 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function IssueDetailPage({ params }: Props) {
+  const session = await auth();
   const { id } = await params;
   const issueId = parseInt(id);
   if (isNaN(issueId)) notFound();
@@ -40,12 +42,14 @@ export default async function IssueDetailPage({ params }: Props) {
       <Box className="md:col-span-4">
         <IssueDetails issue={issue} />
       </Box>
-      <Box>
-        <Flex direction="column" gap="4">
-          <EditIssueButton issueId={issue.id} />
-          <DeleteIssueButton issueId={issue.id} />
-        </Flex>
-      </Box>
+      {session && (
+        <Box>
+          <Flex direction="column" gap="4">
+            <EditIssueButton issueId={issue.id} />
+            <DeleteIssueButton issueId={issue.id} />
+          </Flex>
+        </Box>
+      )}
     </Grid>
   );
 }
