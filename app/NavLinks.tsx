@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import classNames from "classnames";
 
 const links = [
   { href: "/", label: "Dashboard" },
@@ -18,10 +17,7 @@ export default function NavLinks() {
         <li key={href}>
           <Link
             href={href}
-            className={classNames("transition-colors hover:text-gray-800", {
-              "font-semibold": pathname === href,
-              "text-gray-500": pathname !== href,
-            })}
+            className={pathname === href ? "nav-link nav-link-active" : "nav-link"}
           >
             {label}
           </Link>

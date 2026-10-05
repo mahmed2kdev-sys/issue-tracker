@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@utility nav-link {
+  @apply text-gray-500 transition-colors hover:text-gray-800;
+}
+
+@utility nav-link-active {
+  @apply font-semibold;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
