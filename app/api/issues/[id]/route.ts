@@ -1,4 +1,4 @@
-import { issueSchema } from "@/app/ValidationSchemas";
+import { patchIssueSchema } from "@/app/ValidationSchemas";
 import { auth } from "@/app/auth/authOptions";
 import { prisma } from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
@@ -19,7 +19,7 @@ export async function PATCH(
   }
 
   const body = await request.json();
-  const validation = issueSchema.safeParse(body);
+  const validation = patchIssueSchema.safeParse(body);
   if (!validation.success) {
     return NextResponse.json({ error: validation.error.message }, { status: 400 });
   }
@@ -31,9 +31,28 @@ export async function PATCH(
     return NextResponse.json({ error: "Issue not found" }, { status: 404 });
   }
 
+  if ("assignedToUserId" in validation.data && validation.data.assignedToUserId) {
+    const user = await prisma.user.findUnique({
+      where: { id: validation.data.assignedToUserId },
+    });
+    if (!user) {
+      return NextResponse.json({ error: "Invalid user" }, { status: 400 });
+    }
+  }
+
   const updatedIssue = await prisma.issue.update({
     where: { id: issueId },
-    data: { title: body.title, description: body.description },
+    data: {
+      ...(validation.data.title !== undefined && {
+        title: validation.data.title,
+      }),
+      ...(validation.data.description !== undefined && {
+        description: validation.data.description,
+      }),
+      ...("assignedToUserId" in validation.data && {
+        assignedToUserId: validation.data.assignedToUserId,
+      }),
+    },
   });
   return NextResponse.json(updatedIssue);
 }
