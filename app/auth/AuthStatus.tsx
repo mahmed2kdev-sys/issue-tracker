@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Avatar, Box, DropdownMenu, Text } from "@radix-ui/themes";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/app/components";
 
 export default function AuthStatus() {
+  const pathname = usePathname();
   const { data: session, status } = useSession();
 
   return (
@@ -31,7 +33,7 @@ export default function AuthStatus() {
               <Text size="2">{session.user!.email}</Text>
             </DropdownMenu.Label>
             <DropdownMenu.Item asChild>
-              <Link href="/api/auth/signout">Log out</Link>
+              <Link href="/api/auth/signout?callbackUrl=/">Log out</Link>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
@@ -39,8 +41,8 @@ export default function AuthStatus() {
 
       {status === "unauthenticated" && (
         <Link
-          href="/api/auth/signin"
-          className="text-gray-500 transition-colors hover:text-gray-800"
+          href={`/api/auth/signin?callbackUrl=${encodeURIComponent(pathname)}`}
+          className="nav-link"
         >
           Log in
         </Link>
