@@ -3,6 +3,7 @@ import { Box, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
+import AssigneeSelect from "./AssigneeSelect";
 import IssueDetails from "./IssueDetails";
 import { auth } from "@/app/auth/authOptions";
 
@@ -45,6 +46,7 @@ export default async function IssueDetailPage({ params }: Props) {
       {session && (
         <Box>
           <Flex direction="column" gap="4">
+            <AssigneeSelect />
             <EditIssueButton issueId={issue.id} />
             <DeleteIssueButton issueId={issue.id} />
           </Flex>
