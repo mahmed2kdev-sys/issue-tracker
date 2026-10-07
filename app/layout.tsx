@@ -6,8 +6,10 @@ import { Inter } from "next/font/google";
 import { Container, Theme } from "@radix-ui/themes";
 import NavBar from "./NavBar";
 import AuthProvider from "./auth/AuthProvider";
+import AuthToasts from "./auth/AuthToasts";
 import QueryClientProvider from "./QueryClientProvider";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,6 +36,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </AuthProvider>
           </QueryClientProvider>
           <Toaster position="top-center" />
+          <Suspense>
+            <AuthToasts />
+          </Suspense>
         </Theme>
       </body>
     </html>

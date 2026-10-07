@@ -33,7 +33,11 @@ export default function AuthStatus() {
               <Text size="2">{session.user!.email}</Text>
             </DropdownMenu.Label>
             <DropdownMenu.Item asChild>
-              <Link href="/api/auth/signout?callbackUrl=/">Log out</Link>
+              <Link
+                href={`/api/auth/signout?callbackUrl=${encodeURIComponent("/?toast=logged-out")}`}
+              >
+                Log out
+              </Link>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
@@ -41,7 +45,7 @@ export default function AuthStatus() {
 
       {status === "unauthenticated" && (
         <Link
-          href={`/api/auth/signin?callbackUrl=${encodeURIComponent(pathname)}`}
+          href={`/api/auth/signin?callbackUrl=${encodeURIComponent(`${pathname}?toast=logged-in`)}`}
           className="nav-link"
         >
           Log in
