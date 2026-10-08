@@ -73,10 +73,7 @@ function RegisterForm() {
       redirect: false,
     });
     if (result?.error) setError("Something went wrong. Please try again.");
-    else {
-      router.push(callbackUrl);
-      router.refresh();
-    }
+    else if (result?.url) router.push(result.url);
   });
 
   return (
