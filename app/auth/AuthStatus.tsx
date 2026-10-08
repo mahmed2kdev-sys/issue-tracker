@@ -43,14 +43,16 @@ export default function AuthStatus() {
         </DropdownMenu.Root>
       )}
 
-      {status === "unauthenticated" && (
-        <Link
-          href={`/login?callbackUrl=${encodeURIComponent(`${pathname}?toast=logged-in`)}`}
-          className="nav-link"
-        >
-          Log in
-        </Link>
-      )}
+      {status === "unauthenticated" &&
+        pathname !== "/login" &&
+        pathname !== "/register" && (
+          <Link
+            href={`/login?callbackUrl=${encodeURIComponent(`${pathname}?toast=logged-in`)}`}
+            className="nav-link"
+          >
+            Log in
+          </Link>
+        )}
     </Box>
   );
 }

@@ -29,7 +29,8 @@ function RegisterForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const raw = searchParams.get("callbackUrl");
-  const callbackUrl = raw?.startsWith("/") ? raw : "/";
+  const callbackUrl =
+    raw?.startsWith("/") && !raw.startsWith("/login") && !raw.startsWith("/register") ? raw : "/";
   const [error, setError] = useState("");
   const {
     register,
