@@ -7,9 +7,10 @@ import { Box, Button, Callout, Card, Flex, Heading, Text, TextField } from "@rad
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import LoginLoading from "./loading";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -24,10 +25,11 @@ function GoogleIcon() {
   );
 }
 
-export default function LoginPage() {
+function LoginForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const raw = searchParams.get("callbackUrl");
+  const callbackUrl = raw?.startsWith("/") ? raw : "/";
   const [error, setError] = useState("");
   const {
     register,
@@ -68,15 +70,24 @@ export default function LoginPage() {
             variant="soft"
             color="gray"
             className="w-full"
+            disabled={isSubmitting}
             onClick={() => signIn("google", { callbackUrl })}
           >
             <GoogleIcon /> Sign in with Google
           </Button>
           <Text size="2">
-            No account? <Link href="/register">Register</Link>
+            No account? <Link href={`/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}>Register</Link>
           </Text>
         </Flex>
       </Card>
     </Flex>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<LoginLoading />}>
+      <LoginForm />
+    </Suspense>
   );
 }

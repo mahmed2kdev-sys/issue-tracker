@@ -28,7 +28,8 @@ function GoogleIcon() {
 function RegisterForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
+  const raw = searchParams.get("callbackUrl");
+  const callbackUrl = raw?.startsWith("/") ? raw : "/";
   const [error, setError] = useState("");
   const {
     register,
@@ -109,7 +110,7 @@ function RegisterForm() {
             <GoogleIcon /> Sign up with Google
           </Button>
           <Text size="2">
-            Already have an account? <Link href="/login">Log in</Link>
+            Already have an account? <Link href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}>Log in</Link>
           </Text>
         </Flex>
       </Card>

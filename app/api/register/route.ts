@@ -18,9 +18,16 @@ export async function POST(req: Request) {
   }
 
   const hashed = await bcrypt.hash(password, 10);
-  const user = await prisma.user.create({
-    data: { name, email, password: hashed },
-  });
+  try {
+    const user = await prisma.user.create({
+      data: { name, email, password: hashed },
+    });
 
-  return NextResponse.json({ id: user.id, email: user.email, name: user.name }, { status: 201 });
+    return NextResponse.json({ id: user.id, email: user.email, name: user.name }, { status: 201 });
+  } catch (e: unknown) {
+    if (typeof e === "object" && e !== null && "code" in e && e.code === "P2002") {
+      return NextResponse.json({ error: "Email already registered" }, { status: 409 });
+    }
+    throw e;
+  }
 }
