@@ -41,7 +41,10 @@ function LoginForm() {
     setError("");
     const result = await signIn("credentials", { ...data, callbackUrl, redirect: false });
     if (result?.error) setError("Invalid email or password.");
-    else if (result?.url) router.push(result.url);
+    else {
+      router.push(callbackUrl);
+      router.refresh();
+    }
   });
 
   return (
