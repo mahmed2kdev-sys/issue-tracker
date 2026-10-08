@@ -6,7 +6,7 @@ export default auth((req) => {
   const isProtected =
     pathname === "/issues/new" || pathname.startsWith("/issues/edit/");
   if (isProtected && !req.auth) {
-    const signInUrl = new URL("/api/auth/signin", req.nextUrl.origin);
+    const signInUrl = new URL("/login", req.nextUrl.origin);
     signInUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(signInUrl);
   }

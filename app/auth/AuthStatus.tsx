@@ -45,7 +45,7 @@ export default function AuthStatus() {
 
       {status === "unauthenticated" && (
         <Link
-          href={`/api/auth/signin?callbackUrl=${encodeURIComponent(`${pathname}?toast=logged-in`)}`}
+          href={`/login?callbackUrl=${encodeURIComponent(`${pathname}?toast=logged-in`)}`}
           className="nav-link"
         >
           Log in
