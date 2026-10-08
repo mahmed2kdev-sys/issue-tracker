@@ -63,6 +63,9 @@ Hashing: `bcryptjs` (pure JS, no native build, standard for Auth.js examples).
 - `app/register/page.tsx` (client): name/email/password form, posts to
   `/api/register`, then `signIn("credentials", ...)`; Google button included;
   link back to `/login`.
+- `app/login/loading.tsx` + `app/register/loading.tsx`: route-level skeletons
+  using the existing `Skeleton` component (`app/components/Skeleton.tsx`),
+  matching the Card/form shape while the client pages load.
 - `AuthStatus.tsx:46-53`: point Log in link at `/login` (preserve callbackUrl).
 - `proxy.ts:9-11`: redirect unauthenticated to `/login?callbackUrl=...` instead
   of `/api/auth/signin`.
