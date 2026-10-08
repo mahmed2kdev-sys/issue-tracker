@@ -3,7 +3,16 @@
 import { ErrorMessage, Spinner } from "@/app/components";
 import { loginSchema } from "@/app/ValidationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Callout, Card, Flex, Heading, Text, TextField } from "@radix-ui/themes";
+import {
+  Box,
+  Button,
+  Callout,
+  Card,
+  Flex,
+  Heading,
+  Text,
+  TextField,
+} from "@radix-ui/themes";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,10 +26,22 @@ type LoginFormData = z.infer<typeof loginSchema>;
 function GoogleIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
-      <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z" />
-      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" />
-      <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" />
-      <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z" />
+      <path
+        fill="#FFC107"
+        d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.6-.4-3.9z"
+      />
+      <path
+        fill="#FF3D00"
+        d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.3 6.1 29.4 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"
+      />
+      <path
+        fill="#4CAF50"
+        d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"
+      />
+      <path
+        fill="#1976D2"
+        d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C36.9 39.2 44 34 44 24c0-1.3-.1-2.6-.4-3.9z"
+      />
     </svg>
   );
 }
@@ -30,7 +51,11 @@ function LoginForm() {
   const router = useRouter();
   const raw = searchParams.get("callbackUrl");
   const callbackUrl =
-    raw?.startsWith("/") && !raw.startsWith("/login") && !raw.startsWith("/register") ? raw : "/";
+    raw?.startsWith("/") &&
+    !raw.startsWith("/login") &&
+    !raw.startsWith("/register")
+      ? raw
+      : "/";
   const [error, setError] = useState("");
   const {
     register,
@@ -40,7 +65,12 @@ function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     setError("");
-    const result = await signIn("credentials", { ...data, callbackUrl, redirect: false });
+    const result = await signIn("credentials", {
+      ...data,
+      callbackUrl,
+      redirect: false,
+    });
+
     if (result?.error) setError("Invalid email or password.");
     else if (result?.url) router.push(result.url);
   });
@@ -57,9 +87,17 @@ function LoginForm() {
           </Box>
         )}
         <form className="space-y-3" onSubmit={onSubmit}>
-          <TextField.Root placeholder="Email" type="email" {...register("email")} />
+          <TextField.Root
+            placeholder="Email"
+            type="email"
+            {...register("email")}
+          />
           <ErrorMessage>{errors.email?.message}</ErrorMessage>
-          <TextField.Root placeholder="Password" type="password" {...register("password")} />
+          <TextField.Root
+            placeholder="Password"
+            type="password"
+            {...register("password")}
+          />
           <ErrorMessage>{errors.password?.message}</ErrorMessage>
           <Button className="w-full" disabled={isSubmitting}>
             Log in
@@ -77,7 +115,12 @@ function LoginForm() {
             <GoogleIcon /> Sign in with Google
           </Button>
           <Text size="2">
-            No account? <Link href={`/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}>Register</Link>
+            No account?{" "}
+            <Link
+              href={`/register?callbackUrl=${encodeURIComponent(callbackUrl)}`}
+            >
+              Register
+            </Link>
           </Text>
         </Flex>
       </Card>
