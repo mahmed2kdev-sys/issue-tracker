@@ -52,6 +52,7 @@ function LoginForm() {
   const raw = searchParams.get("callbackUrl");
   const callbackUrl =
     raw?.startsWith("/") &&
+    !raw.startsWith("//") &&
     !raw.startsWith("/login") &&
     !raw.startsWith("/register")
       ? raw
@@ -65,14 +66,21 @@ function LoginForm() {
 
   const onSubmit = handleSubmit(async (data) => {
     setError("");
-    const result = await signIn("credentials", {
-      ...data,
-      callbackUrl,
-      redirect: false,
-    });
-
-    if (result?.error) setError("Invalid email or password.");
-    else if (result?.url) router.push(result.url);
+    try {
+      const result = await signIn("credentials", {
+        ...data,
+        redirect: false,
+        redirectTo: callbackUrl,
+      });
+      if (result?.error) {
+        setError("Invalid email or password.");
+      } else {
+        router.push(callbackUrl);
+        router.refresh();
+      }
+    } catch {
+      setError("Invalid email or password.");
+    }
   });
 
   return (
@@ -110,7 +118,7 @@ function LoginForm() {
             color="gray"
             className="w-full"
             disabled={isSubmitting}
-            onClick={() => signIn("google", { callbackUrl })}
+            onClick={() => signIn("google", { redirectTo: callbackUrl })}
           >
             <GoogleIcon /> Sign in with Google
           </Button>

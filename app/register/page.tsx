@@ -30,7 +30,7 @@ function RegisterForm() {
   const router = useRouter();
   const raw = searchParams.get("callbackUrl");
   const callbackUrl =
-    raw?.startsWith("/") && !raw.startsWith("/login") && !raw.startsWith("/register") ? raw : "/";
+    raw?.startsWith("/") && !raw.startsWith("//") && !raw.startsWith("/login") && !raw.startsWith("/register") ? raw : "/";
   const [error, setError] = useState("");
   const {
     register,
@@ -70,11 +70,14 @@ function RegisterForm() {
     const result = await signIn("credentials", {
       email: data.email,
       password: data.password,
-      callbackUrl,
       redirect: false,
+      redirectTo: callbackUrl,
     });
     if (result?.error) setError("Something went wrong. Please try again.");
-    else if (result?.url) router.push(result.url);
+    else {
+      router.push(callbackUrl);
+      router.refresh();
+    }
   });
 
   return (
@@ -106,7 +109,7 @@ function RegisterForm() {
             color="gray"
             className="w-full"
             disabled={isSubmitting}
-            onClick={() => signIn("google", { callbackUrl })}
+            onClick={() => signIn("google", { redirectTo: callbackUrl })}
           >
             <GoogleIcon /> Sign up with Google
           </Button>
