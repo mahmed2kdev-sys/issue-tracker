@@ -19,7 +19,10 @@ export default function IssueStatusFilter() {
     <Select.Root
       value={status}
       onValueChange={(status) => {
-        const query = status === "ALL" ? "" : `?status=${status}`;
+        const params = new URLSearchParams(searchParams);
+        if (status === "ALL") params.delete("status");
+        else params.set("status", status);
+        const query = params.size ? `?${params.toString()}` : "";
         router.push(`/issues/list${query}`);
       }}
     >
