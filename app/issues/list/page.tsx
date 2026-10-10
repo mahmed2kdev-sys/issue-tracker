@@ -1,33 +1,28 @@
 import IssueActions from "@/app/issues/list/IssueActions";
 import { IssueStatusBadge, Link } from "@/app/components";
 import prisma from "@/prisma/client";
-import { Status } from "@/generated/prisma/client";
+import { Issue, Status } from "@/generated/prisma/client";
 import { Table } from "@radix-ui/themes";
 import NextLink from "next/link";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
 
-const columns = [
-  { label: "Title", value: "title", className: undefined },
-  { label: "Status", value: "status", className: "hidden md:table-cell" },
-  { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
-] as const;
+interface IssuesPageProps {
+  searchParams: Promise<{ status: Status; orderBy: keyof Issue }>;
+}
 
-type OrderBy = (typeof columns)[number]["value"];
-
-async function IssuesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ status?: string; orderBy?: string }>;
-}) {
+async function IssuesPage({ searchParams }: IssuesPageProps) {
+  const columns: { label: string; value: keyof Issue; className?: string }[] = [
+    { label: "Title", value: "title" },
+    { label: "Status", value: "status", className: "hidden md:table-cell" },
+    { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
+  ];
   const { status, orderBy } = await searchParams;
-  const isValidStatus = Object.values(Status).includes(status as Status);
-  const isValidOrderBy = columns
-    .map((c) => c.value)
-    .includes(orderBy as OrderBy);
+  const isValidStatus = Object.values(Status).includes(status);
+  const isValidOrderBy = columns.map((c) => c.value).includes(orderBy);
 
   const issues = await prisma.issue.findMany({
-    where: isValidStatus ? { status: status as Status } : undefined,
-    orderBy: isValidOrderBy ? { [orderBy as OrderBy]: "asc" } : undefined,
+    where: isValidStatus ? { status } : undefined,
+    orderBy: isValidOrderBy ? { [orderBy]: "asc" } : undefined,
   });
 
   return (
@@ -43,16 +38,13 @@ async function IssuesPage({
                 className={column.className}
               >
                 <NextLink
-                  href={`/issues/list?${new URLSearchParams({
-                    ...(status ? { status } : {}),
-                    orderBy: column.value,
-                  })}`}
+                  href={{
+                    query: { status, orderBy: column.value },
+                  }}
                 >
                   {column.label}
                 </NextLink>
-                {orderBy === column.value && (
-                  <ArrowUpIcon className="inline" />
-                )}
+                {orderBy === column.value && <ArrowUpIcon className="inline" />}
               </Table.ColumnHeaderCell>
             ))}
           </Table.Row>
