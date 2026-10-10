@@ -1,12 +1,20 @@
 import IssueActions from "@/app/issues/list/IssueActions";
 import { IssueStatusBadge, Link } from "@/app/components";
 import prisma from "@/prisma/client";
+import { Status } from "@/generated/prisma/client";
 import { Table } from "@radix-ui/themes";
-import delay from "delay";
 
-async function IssuesPage() {
-  await delay(1000);
-  const issues = await prisma.issue.findMany();
+async function IssuesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const { status } = await searchParams;
+  const isValidStatus = Object.values(Status).includes(status as Status);
+
+  const issues = await prisma.issue.findMany({
+    where: isValidStatus ? { status: status as Status } : undefined,
+  });
 
   return (
     <div>
