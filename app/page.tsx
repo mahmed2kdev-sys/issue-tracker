@@ -1,7 +1,8 @@
+import IssueChart from "./IssueChart";
 import IssueSummary from "./IssueSummary";
 import LatestIssues from "@/app/LatestIssues";
 import { prisma } from "@/prisma/client";
-import { Flex } from "@radix-ui/themes";
+import { Flex, Grid } from "@radix-ui/themes";
 
 export default async function Home() {
   const [open, inProgress, closed] = await Promise.all(
@@ -11,9 +12,12 @@ export default async function Home() {
   );
 
   return (
-    <Flex direction="column" gap="4">
-      <IssueSummary open={open} inProgress={inProgress} closed={closed} />
+    <Grid columns={{ initial: "1", md: "2" }} gap="4">
+      <Flex direction="column" gap="4">
+        <IssueSummary open={open} inProgress={inProgress} closed={closed} />
+        <IssueChart open={open} inProgress={inProgress} closed={closed} />
+      </Flex>
       <LatestIssues />
-    </Flex>
+    </Grid>
   );
 }
