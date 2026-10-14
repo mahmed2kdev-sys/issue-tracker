@@ -3,6 +3,7 @@ import prisma from "@/prisma/client";
 import { Status } from "@/generated/prisma/client";
 import IssueActions from "./IssueActions";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
+import { Metadata } from "next";
 
 interface IssuesPageProps {
   searchParams: Promise<IssueQuery>;
@@ -40,4 +41,10 @@ async function IssuesPage({ searchParams }: IssuesPageProps) {
   );
 }
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - Issue List",
+  description: "View and manage all issues in the issue tracker application.",
+};
+
 export default IssuesPage;

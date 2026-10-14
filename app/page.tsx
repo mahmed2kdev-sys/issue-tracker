@@ -3,12 +3,13 @@ import IssueSummary from "./IssueSummary";
 import LatestIssues from "@/app/LatestIssues";
 import { prisma } from "@/prisma/client";
 import { Flex, Grid } from "@radix-ui/themes";
+import { Metadata } from "next";
 
 export default async function Home() {
   const [open, inProgress, closed] = await Promise.all(
     (["OPEN", "IN_PROGRESS", "CLOSED"] as const).map((status) =>
-      prisma.issue.count({ where: { status } })
-    )
+      prisma.issue.count({ where: { status } }),
+    ),
   );
 
   return (
@@ -21,3 +22,8 @@ export default async function Home() {
     </Grid>
   );
 }
+
+export const metadata: Metadata = {
+  title: "Issue Tracker - Dashboard",
+  description: "A simple issue tracker built with Next.js and Prisma.",
+};
