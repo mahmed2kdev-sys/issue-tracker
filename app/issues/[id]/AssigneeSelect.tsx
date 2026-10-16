@@ -40,6 +40,7 @@ export default function AssigneeSelect({ issue }: { issue: Issue }) {
 
   return (
     <Select.Root
+      key={issue.assignedToUserId ?? "unassigned"}
       defaultValue={issue.assignedToUserId ?? "unassigned"}
       onValueChange={assignIssue}
     >

@@ -5,6 +5,7 @@ import { cache } from "react";
 import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import AssigneeSelect from "./AssigneeSelect";
+import StatusSelect from "./StatusSelect";
 import IssueDetails from "./IssueDetails";
 import { auth } from "@/app/auth/authOptions";
 
@@ -33,6 +34,7 @@ export default async function IssueDetailPage({ params }: Props) {
       {session && (
         <Box>
           <Flex direction="column" gap="4">
+            <StatusSelect issue={issue} />
             <AssigneeSelect issue={issue} />
             <EditIssueButton issueId={issue.id} />
             <DeleteIssueButton issueId={issue.id} />

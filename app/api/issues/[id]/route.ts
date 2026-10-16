@@ -42,17 +42,7 @@ export async function PATCH(
 
   const updatedIssue = await prisma.issue.update({
     where: { id: issueId },
-    data: {
-      ...(validation.data.title !== undefined && {
-        title: validation.data.title,
-      }),
-      ...(validation.data.description !== undefined && {
-        description: validation.data.description,
-      }),
-      ...("assignedToUserId" in validation.data && {
-        assignedToUserId: validation.data.assignedToUserId,
-      }),
-    },
+    data: validation.data,
   });
   return NextResponse.json(updatedIssue);
 }

@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import { issueStatus } from './issues/statuses';
 
 export const issueSchema = z.object({
     title: z.string().min(1, 'Title is required').max(255),
@@ -8,7 +9,8 @@ export const issueSchema = z.object({
 export const patchIssueSchema = z.object({
     title: z.string().min(1, 'Title is required').max(255).optional(),
     description: z.string().min(1, 'Description is required').max(1000).optional(),
-    assignedToUserId: z.string().min(1).max(255).optional().nullable()
+    assignedToUserId: z.string().min(1).max(255).optional().nullable(),
+    status: z.enum(issueStatus).optional()
 });
 
 export const registerSchema = z.object({

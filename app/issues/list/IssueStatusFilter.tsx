@@ -3,13 +3,7 @@
 import { Select } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-
-const statuses: { label: string; value: string }[] = [
-  { label: "All", value: "ALL" },
-  { label: "Open", value: "OPEN" },
-  { label: "In Progress", value: "IN_PROGRESS" },
-  { label: "Closed", value: "CLOSED" },
-];
+import { statuses } from "../statuses";
 
 export default function IssueStatusFilter() {
   const router = useRouter();
@@ -38,6 +32,7 @@ export default function IssueStatusFilter() {
     >
       <Select.Trigger placeholder="Filter by status..." />
       <Select.Content>
+        <Select.Item value="ALL">All</Select.Item>
         {statuses.map((s) => (
           <Select.Item key={s.label} value={s.value}>
             {s.label}
